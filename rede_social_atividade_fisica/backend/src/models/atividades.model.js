@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 
 const Atividade = sequelize.define('Atividades',
     {
-        id: {
+        atividadeId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             autoIncrement: true
