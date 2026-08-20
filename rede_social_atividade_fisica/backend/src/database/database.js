@@ -10,10 +10,6 @@ const sequelize = new Sequelize(
         dialect: postgres,
         logging: true,
     }
-
 )
 
-
-
-
-//id,nome,email,nome_usuario,imagem,senha,createdAt,updatedAt
+export default sequelize;
