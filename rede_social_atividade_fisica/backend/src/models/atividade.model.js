@@ -5,8 +5,8 @@ const Atividade = sequelize.define('Atividades',
     {
         atividadeId: {
             type: DataTypes.INTEGER,
-            allowNull: false,
-            autoIncrement: true
+            autoIncrement: true,
+            primaryKey: true
         },
         tipo_atividade: {
             type: DataTypes.ENUM('Caminhada', 'Corrida', 'Trilha'),
