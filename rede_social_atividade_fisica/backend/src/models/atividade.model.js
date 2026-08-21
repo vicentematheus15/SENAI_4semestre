@@ -31,14 +31,3 @@ const Atividade = sequelize.define('Atividades',
 )
 
 export default Atividade;
-
-/*
-id,
-tipo_atividade,
-distancia_percorrida,
-duracao_atividade,
-quantidade_calorias,
-createdAt,
-updatedAt,
-usuario_id
-*/
