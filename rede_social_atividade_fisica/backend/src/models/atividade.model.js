@@ -9,7 +9,7 @@ const Atividade = sequelize.define('Atividades',
             primaryKey: true
         },
         tipo_atividade: {
-            type: DataTypes.ENUM('Caminhada', 'Corrida', 'Trilha'),
+            type: DataTypes.ENUM('caminhada', 'corrida', 'trilha'),
             allowNull: false
         },
         distancia_percorrida: {
