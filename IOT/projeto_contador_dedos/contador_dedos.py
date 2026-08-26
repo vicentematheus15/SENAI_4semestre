@@ -22,7 +22,7 @@ HAND_CONNECTIONS = [
 ]
 
 # Tentar abrir câmera
-video = cv2.VideoCapture(0)
+video = cv2.VideoCapture("contador_dedos.mov")
 if not video.isOpened():
     video = cv2.VideoCapture(1)
 if not video.isOpened():
