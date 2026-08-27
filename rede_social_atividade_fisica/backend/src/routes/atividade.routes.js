@@ -3,7 +3,7 @@ import * as controller from '../controllers/atividade.controller.js';
 
 const atividadeRoutes = Router();
 
-atividadeRoutes.post('/filtrar', controller.filtrarAtividade)
+atividadeRoutes.post('/listar', controller.listarAtividade)
 
 
 export default atividadeRoutes;
