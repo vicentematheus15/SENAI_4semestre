@@ -24,7 +24,7 @@ const Curtida = sequelize.define('Curtida',
         indexes: [
             {
                 unique: true,
-                filds: ['usuarioId', 'atividadeId']
+                fields: ['usuarioId', 'atividadeId']
             }
         ]
     }
