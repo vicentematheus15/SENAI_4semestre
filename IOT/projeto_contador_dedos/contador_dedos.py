@@ -22,7 +22,7 @@ HAND_CONNECTIONS = [
 ]
 
 # Tentar abrir câmera
-video = cv2.VideoCapture("contador_dedos.mov")
+video = cv2.VideoCapture("contador_dedos.mov") #se trocar o valor para 0, pega da câmera que estiver conectada no usb do pc
 if not video.isOpened():
     video = cv2.VideoCapture(1)
 if not video.isOpened():
