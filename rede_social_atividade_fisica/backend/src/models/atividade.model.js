@@ -26,7 +26,7 @@ const Atividade = sequelize.define('Atividades',
         }
     },{
         tableName: 'atividades',
-        timeStamps: true
+        timestamps: true
     }
 )
 
