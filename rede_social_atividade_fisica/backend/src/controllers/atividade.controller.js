@@ -1,5 +1,48 @@
-import { Atividade, Usuario } from "../models/index.js";
+import { Atividade, Usuario, Curtida, Comentario } from "../models/index.js";
 
-export async function filtrarAtividade(req, res){
+export async function listarAtividades(req, res){
+try {
+    const {tipo, page = 1, usuarioId} = req.body;
+    const limit = 4;
+    const offset = (Number(page) -1) * limit;
 
+    const where = tipo ? { tipo_atividae: tipo } : {};
+
+    const {count, rows} = await Atividade.findAnCountall({
+        where,
+        limit,
+        offset,
+        order: [['createdAt', 'DESC']],
+        include: [{model: Usuario, attributes: ['nome', 'nome_usuario', 'imagem'] }]
+    });
+
+    const atividades = await Promise.all(rows.map(async (atividade) => {
+        const totalCurtidas = await Curtida.count({ where: {atividadeId: atividade.atividadeId } });
+        const totalComentarios = await Comentario.count({ where: { atividadeId: atividade.atividadeId }});
+        const curtiu = usuarioId
+            ? !!(await Curtida.findOne({ where: { atividadeId: atividade.atividadeId } }))
+            : false;
+
+        return {...atividade.toJSON(), totalCurtidas, totalComentarios, curtiu };
+    }));
+
+    return res.status(200).json({
+        atividades,
+        totalPaginas: Math.ceil(count / limit),
+        paginaAtual: Number(page)
+    });
+    
+} catch (error) {
+    console.error(error)
+    return res.status(500).json({erro: "Erro interno do servidor!"})
+}
+};
+
+export async function criarAtividade(req, res){
+try {
+    
+} catch (error) {
+    console.error(error)
+    return res.status(500).json({erro: "Erro interno do servidor!"})
+}
 };
