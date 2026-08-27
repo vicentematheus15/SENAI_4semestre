@@ -40,6 +40,17 @@ try {
 
 export async function criarAtividade(req, res){
 try {
+    const {tipo_atividade, distancia_percorrida, duracao_atividade, quantidade_calorias, usuarioId } = req.body;
+
+    if(!tipo_atividade || !distancia_percorrida || !duracao_atividade || !quantidade_calorias || !usuarioId){
+        return res.status(400).json({ erro: "Campo obrigatório" })
+    }
+
+    const novaAtividade = await sequelize.create({
+        tipo_atividade, distancia_percorrida, duracao_atividade, quantidade_calorias, usuarioId 
+    })
+
+    return res.status(201).json(novaAtividade);
     
 } catch (error) {
     console.error(error)
