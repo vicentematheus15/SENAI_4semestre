@@ -39,21 +39,48 @@ try {
 };
 
 export async function criarAtividade(req, res){
-try {
-    const {tipo_atividade, distancia_percorrida, duracao_atividade, quantidade_calorias, usuarioId } = req.body;
+    try {
+        const {tipo_atividade, distancia_percorrida, duracao_atividade, quantidade_calorias, usuarioId } = req.body;
 
-    if(!tipo_atividade || !distancia_percorrida || !duracao_atividade || !quantidade_calorias || !usuarioId){
-        return res.status(400).json({ erro: "Campo obrigatório" })
+        if(!tipo_atividade || !distancia_percorrida || !duracao_atividade || !quantidade_calorias || !usuarioId){
+            return res.status(400).json({ erro: "Campo obrigatório" })
+        }
+
+        const novaAtividade = await sequelize.create({
+            tipo_atividade, distancia_percorrida, duracao_atividade, quantidade_calorias, usuarioId 
+        })
+
+        return res.status(201).json(novaAtividade);
+
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({erro: "Erro interno do servidor!"})
     }
-
-    const novaAtividade = await sequelize.create({
-        tipo_atividade, distancia_percorrida, duracao_atividade, quantidade_calorias, usuarioId 
-    })
-
-    return res.status(201).json(novaAtividade);
-    
-} catch (error) {
-    console.error(error)
-    return res.status(500).json({erro: "Erro interno do servidor!"})
-}
 };
+
+export async function curtirAtividade(req, res){
+    try {
+        const {atividadeId} = req.params;
+        const {usuarioId} = req.body;
+
+        if(!usuarioId){
+            return res.status(400).json({ erro: "usuarioId é obrigatório" })
+        }
+
+        const curtidaExistente = await sequelize.findOne({ where: { atividadeId, usuarioId }});
+
+        if(curtidaExistente){
+            await curtidaExistente.destroy;
+            const totalCurtidas = await Curtida.count({ where: { atividadeId }});
+            return res.status(200).json({ curtiu: false, totalCurtidas });
+        };
+
+        await Curtida.create({ atividadeId, usuarioId });
+        const totalCurtidas = await Curtida.count({ where: { atividadeId } });
+        return res.status(200).json({ curtiu: true, totalCurtidas })
+        
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({erro: "Erro interno do servidor!"})
+    }
+}
