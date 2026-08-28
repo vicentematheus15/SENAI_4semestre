@@ -1,15 +1,15 @@
-import { sequelize } from "sequelize/lib/model";
+import sequelize from "../database/database.js";
 import { Atividade, Usuario, Curtida, Comentario } from "../models/index.js";
 
 export async function listarAtividades(req, res){
 try {
-    const {tipo, page = 1, usuarioId} = req.body;
+    const {tipo, page = 1, usuarioId} = req.query;
     const limit = 4;
     const offset = (Number(page) -1) * limit;
 
-    const where = tipo ? { tipo_atividae: tipo } : {};
+    const where = tipo ? { tipo_atividade: tipo } : {};
 
-    const {count, rows} = await Atividade.findAnCountall({
+    const {count, rows} = await Atividade.findAndCountAll({
         where,
         limit,
         offset,
