@@ -1,3 +1,4 @@
+import { sequelize } from "sequelize/lib/model";
 import { Atividade, Usuario, Curtida, Comentario } from "../models/index.js";
 
 export async function listarAtividades(req, res){
@@ -33,8 +34,8 @@ try {
     });
     
 } catch (error) {
-    console.error(error)
-    return res.status(500).json({erro: "Erro interno do servidor!"})
+    console.error(error);
+    return res.status(500).json({erro: "Erro interno do servidor!"});
 }
 };
 
@@ -44,17 +45,17 @@ export async function criarAtividade(req, res){
 
         if(!tipo_atividade || !distancia_percorrida || !duracao_atividade || !quantidade_calorias || !usuarioId){
             return res.status(400).json({ erro: "Campo obrigatório" })
-        }
+        };
 
         const novaAtividade = await sequelize.create({
             tipo_atividade, distancia_percorrida, duracao_atividade, quantidade_calorias, usuarioId 
-        })
+        });
 
         return res.status(201).json(novaAtividade);
 
     } catch (error) {
-        console.error(error)
-        return res.status(500).json({erro: "Erro interno do servidor!"})
+        console.error(error);
+        return res.status(500).json({erro: "Erro interno do servidor!"});
     }
 };
 
@@ -64,7 +65,7 @@ export async function curtirAtividade(req, res){
         const {usuarioId} = req.body;
 
         if(!usuarioId){
-            return res.status(400).json({ erro: "usuarioId é obrigatório" })
+            return res.status(400).json({ erro: "usuarioId é obrigatório" });
         }
 
         const curtidaExistente = await sequelize.findOne({ where: { atividadeId, usuarioId }});
@@ -77,10 +78,30 @@ export async function curtirAtividade(req, res){
 
         await Curtida.create({ atividadeId, usuarioId });
         const totalCurtidas = await Curtida.count({ where: { atividadeId } });
-        return res.status(200).json({ curtiu: true, totalCurtidas })
-        
+        return res.status(200).json({ curtiu: true, totalCurtidas });
+
     } catch (error) {
-        console.error(error)
-        return res.status(500).json({erro: "Erro interno do servidor!"})
+        console.error(error);
+        return res.status(500).json({erro: "Erro interno do servidor!"});
     }
-}
+};
+
+export async function comentarAtividade(req, res){
+    try {
+        const {atividadeId} = req.params;
+        const {usuarioId, texto} = req.body;
+
+        if(!texto || texto.trim().length <= 2 ){
+            return res.status(400).json({ erro: "Não é possível enviar um comentário vazio" })
+        }
+
+        const comentario = await sequelize.create({ atividadeId, usuarioId, texto});
+        const totalComentarios = await Comentario.count({ where: { atividadeId }});
+
+        return res.status(201).json({ comentario, totalComentarios});
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({erro: "Erro interno do servidor!"});
+    }
+};
