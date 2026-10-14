@@ -6,7 +6,7 @@ vagas = []
 with open('vagas.pkl','rb') as arquivo:
     vagas = pickle.load(arquivo)
 
-video = cv2.VideoCapture('video.mp4')
+video = cv2.VideoCapture('./arquivos/video.mp4')
 
 while True:
     check,img = video.read()

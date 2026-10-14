@@ -4,10 +4,14 @@ import usuarioRoutes from './src/routes/usuario.routes.js';
 import atividadeRoutes from './src/routes/atividade.routes.js';
 import './src/models/index.js'
 import sequelize from './src/database/database.js';
+import cors from 'cors';
+
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
+
 
 app.use('/usuarios', usuarioRoutes);
 app.use('/atividades', atividadeRoutes);
